@@ -1,18 +1,18 @@
 import PartCard from '@/components/PartCard';
 import { Parts } from '@/types';
-import { headers } from 'next/headers';
+import path from 'path';
+import { promises as fs } from 'fs';
 
+// This runs on the server
 async function getParts(): Promise<Parts[]> {
-  const host = headers().get('host');
-  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-  const url = `${protocol}://${host}/api/parts`;
-
-  const res = await fetch(url, {
-    next: { revalidate: 60 },
-  });
-
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    const filePath = path.join(process.cwd(), 'data', 'parts.json');
+    const jsonData = await fs.readFile(filePath, 'utf-8');
+    return JSON.parse(jsonData);
+  } catch (error) {
+    console.error('Failed to load parts:', error);
+    return [];
+  }
 }
 
 export default async function Home() {
@@ -35,13 +35,13 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* PARTS */}
+      {/* PARTS GRID */}
       <section id="parts" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-black mb-10 font-display">Available Parts</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {parts.length === 0 ? (
-              <p className="text-gray-500">Loading parts...</p>
+              <p className="text-gray-500 col-span-full text-center">No parts found.</p>
             ) : (
               parts.map(part => <PartCard key={part.id} part={part} />)
             )}
