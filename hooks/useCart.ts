@@ -1,4 +1,5 @@
 'use client';
+
 import { create } from 'zustand';
 import { Parts } from '@/types';
 
@@ -14,20 +15,24 @@ interface CartStore {
 }
 
 export const useCart = create<CartStore>((set) => ({
-  items: [],
+  items: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('cart') || '[]') : [],
   addToCart: (part) =>
     set((state) => {
       const existing = state.items.find((i) => i.id === part.id);
-      if (existing) {
-        return {
-          items: state.items.map((i) =>
-            i.id === part.id ? { ...i, quantity: i.quantity + 1 } : i
-          ),
-        };
-      }
-      return { items: [...state.items, { ...part, quantity: 1 }] };
+      const newItems = existing
+        ? state.items.map((i) => (i.id === part.id ? { ...i, quantity: i.quantity + 1 } : i))
+        : [...state.items, { ...part, quantity: 1 }];
+      localStorage.setItem('cart', JSON.stringify(newItems));
+      return { items: newItems };
     }),
   removeFromCart: (id) =>
-    set((state) => ({ items: state.items.filter((i) => i.id !== id) })),
-  clearCart: () => set({ items: [] }),
+    set((state) => {
+      const newItems = state.items.filter((i) => i.id !== id);
+      localStorage.setItem('cart', JSON.stringify(newItems));
+      return { items: newItems };
+    }),
+  clearCart: () => {
+    localStorage.removeItem('cart');
+    set({ items: [] });
+  },
 }));
