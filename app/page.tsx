@@ -2,9 +2,9 @@ import PartCard from '@/components/PartCard';
 import { Parts } from '@/types';
 
 async function getParts(): Promise<Parts[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || ''}/api/parts`, {
-    next: { revalidate: 60 },
-  });
+const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/parts`, {
+  next: { revalidate: 60 },
+});
   if (!res.ok) return [];
   return res.json();
 }
