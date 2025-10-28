@@ -1,53 +1,39 @@
-// app/page.tsx
 'use client';
 import PartCard from '@/components/PartCard';
 import partsData from '@/data/parts.json';
 
 const cars = [
-  {
-    id: 'a3',
-    name: 'Audi A3',
-    years: '2007-2011',
-    img: 'https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Audi+A3',
-  },
-  {
-    id: 'a4',
-    name: 'Audi A4',
-    years: '2007-2011',
-    img: 'https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Audi+A4',
-  },
-  {
-    id: 'a5',
-    name: 'Audi A5',
-    years: '2007-2010',
-    img: 'https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Audi+A5',
-  },
-  {
-    id: 'a6',
-    name: 'Audi A6',
-    years: '2008-2011',
-    img: 'https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Audi+A6',
-  },
+  { id: 'a3', name: 'Audi A3', years: '2007-2011', img: '/images/audi-a3.jpg' },
+  { id: 'a4', name: 'Audi A4', years: '2007-2011', img: '/images/audi-a4.jpg' },
+  { id: 'a5', name: 'Audi A5', years: '2007-2010', img: '/images/audi-a5.jpg' },
+  { id: 'a6', name: 'Audi A6', years: '2008-2011', img: '/images/audi-a6.jpg' },
 ];
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      {/* HERO – 4 CAR CARDS */}
+      {/* HERO */}
       <section className="bg-gradient-to-b from-gray-50 to-white py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-black mb-4 font-display">
-            Choose Your Audi
+            Choose Your Parts
           </h1>
           <p className="text-lg text-gray-600 mb-12">
-            Precision parts for A3 • A4 • A5 • A6 (2007-2011)
+            Precision parts for A3 • A4 • A5 • A6
           </p>
 
+          {/* === PASTE THE ORDERED GRID HERE === */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {cars.map((car) => (
+            {cars.map((car, index) => (
               <div
                 key={car.id}
-                className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl"
+                className={`
+                  group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl
+                  ${index === 0 ? 'order-1' : ''}
+                  ${index === 1 ? 'order-2 sm:order-3' : ''}
+                  ${index === 2 ? 'order-3 sm:order-2' : ''}
+                  ${index === 3 ? 'order-4' : ''}
+                `}
               >
                 <img
                   src={car.img}
@@ -62,16 +48,17 @@ export default function Home() {
               </div>
             ))}
           </div>
+          {/* === END OF GRID === */}
+
         </div>
       </section>
 
-      {/* ALL PARTS – NO FILTER */}
+      {/* ALL PARTS */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-black mb-10 font-display">
             All Available Parts
           </h2>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {partsData.map((part) => (
               <PartCard key={part.id} part={part} />
@@ -80,18 +67,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTACT + MAP */}
+      {/* CONTACT */}
       <section className="py-20 bg-black text-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 font-display">
             Visit Our Shop
           </h2>
-
           <div className="grid md:grid-cols-2 gap-12">
-            {/* Google Map */}
             <div className="h-96 rounded-lg overflow-hidden shadow-xl">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509373!2d144.9537363153169!3d-37.81720997975195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43e734e2b9%3A0x79b4f3d4f0b4e2b9!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sau!4v1698765432100!5m2!1sen!2sau"
+                src="https://www.google.com/maps/embed?pb=..."
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -99,28 +84,14 @@ export default function Home() {
                 loading="lazy"
               />
             </div>
-
-            {/* Contact Info */}
             <div className="flex flex-col justify-center space-y-6 text-lg">
               <div>
                 <h3 className="text-xl font-bold mb-2">Automi Parts</h3>
                 <p className="text-gray-300">123 Auto Street, Melbourne VIC 3000</p>
               </div>
-              <div>
-                <p className="font-semibold">Phone:</p>
-                <p className="text-gray-300">+61 3 9876 5432</p>
-              </div>
-              <div>
-                <p className="font-semibold">Email:</p>
-                <p className="text-gray-300">parts@automi.com</p>
-              </div>
-              <div>
-                <p className="font-semibold">Hours:</p>
-                <p className="text-gray-300">
-                  Mon-Fri: 9AM – 6PM<br />
-                  Sat: 10AM – 4PM
-                </p>
-              </div>
+              <div><p className="font-semibold">Phone:</p><p className="text-gray-300">+61 3 9876 5432</p></div>
+              <div><p className="font-semibold">Email:</p><p className="text-gray-300">parts@automi.com</p></div>
+              <div><p className="font-semibold">Hours:</p><p className="text-gray-300">Mon-Fri: 9AM – 6PM<br/>Sat: 10AM – 4PM</p></div>
             </div>
           </div>
         </div>
