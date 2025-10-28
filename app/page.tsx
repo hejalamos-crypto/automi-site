@@ -1,148 +1,87 @@
-import PartCard from '@/components/PartCard';
+'use client';
+import { PayPalButtons } from '@paypal/react-paypal-js';
+import { useCart } from '@/hooks/useCart';
 
-// Hardcode your 10 parts here (NO FILE READ, NO FETCH)
-const parts = [
-  {
-    id: 1,
-    name: "Fuel Injector Set",
-    category: "engine",
-    price: 1113.52,
-    stock: 5,
-    brand: "Bosch",
-    oem: "03L130277A",
-    image: "/images/fuel-injector.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
-  },
-  {
-    id: 2,
-    name: "Shock Kit",
-    category: "suspension",
-    price: 277.70,
-    stock: 8,
-    brand: "Sachs",
-    oem: "5Q0513049BFKT",
-    image: "/images/shock-kit.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
-  },
-  {
-    id: 3,
-    name: "Fuel Injector Kit",
-    category: "engine",
-    price: 271.96,
-    stock: 12,
-    brand: "Bosch",
-    oem: "06L906036JKT",
-    image: "/images/fuel-injector-kit.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011"]
-  },
-  {
-    id: 4,
-    name: "Timing Belt Kit",
-    category: "engine",
-    price: 202.56,
-    stock: 10,
-    brand: "Continental",
-    oem: "536181",
-    image: "/images/timing-belt.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
-  },
-  {
-    id: 5,
-    name: "Trailing Arm Kit",
-    category: "suspension",
-    price: 159.92,
-    stock: 7,
-    brand: "Lemforder",
-    oem: "KIT-00984",
-    image: "/images/trailing-arm.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A5 2007-2010"]
-  },
-  {
-    id: 6,
-    name: "Brake Hose Kit",
-    category: "brakes",
-    price: 84.77,
-    stock: 15,
-    brand: "ATE",
-    oem: "1K0611701KKT",
-    image: "/images/brake-hose.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
-  },
-  {
-    id: 7,
-    name: "Accessory Drive Belt Kit",
-    category: "engine",
-    price: 79.68,
-    stock: 20,
-    brand: "Continental",
-    oem: "06J260849DKT3",
-    image: "/images/drive-belt.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011"]
-  },
-  {
-    id: 8,
-    name: "Drive Belt Kit",
-    category: "engine",
-    price: 75.75,
-    stock: 18,
-    brand: "Continental",
-    oem: "KIT-06F260849LKT",
-    image: "/images/drive-belt-kit.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A5 2007-2010"]
-  },
-  {
-    id: 9,
-    name: "Fuel Injector Reseal Kit",
-    category: "engine",
-    price: 38.36,
-    stock: 25,
-    brand: "Genuine Audi",
-    oem: "06D998907KT2",
-    image: "/images/reseal-kit.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
-  },
-  {
-    id: 10,
-    name: "Spark Plug Kit",
-    category: "electrical",
-    price: 31.96,
-    stock: 30,
-    brand: "Bosch",
-    oem: "06H905601AKT4",
-    image: "/images/spark-plug.jpg",
-    compatibleModels: ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
+export default function Checkout() {
+  const { items, clearCart, removeFromCart, addToCart } = useCart();
+  const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0).toFixed(2);
+
+  const createOrder = (data: any, actions: any) => {
+    return actions.order.create({
+      purchase_units: [{
+        amount: { value: total }
+      }]
+    });
+  };
+
+  const onApprove = async (data: any, actions: any) => {
+    await actions.order.capture();
+    alert('Payment successful! Thank you for your order.');
+    clearCart();
+  };
+
+  if (items.length === 0) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+        <h1 className="text-3xl font-bold mb-4">Your cart is empty</h1>
+        <a href="/" className="btn-primary inline-block">Continue Shopping</a>
+      </div>
+    );
   }
-];
 
-export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* HERO */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-24 text-center">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold text-black mb-6 font-display">
-            Precision Parts.<br />Delivered Fast.
-          </h1>
-          <p className="text-lg text-gray-600 mb-10">
-            For <strong>Audi A3 / A4 / A5 (2007-2011)</strong>
-          </p>
-          <a href="#parts" className="inline-block bg-black text-white px-8 py-3 rounded-md font-medium hover:bg-gray-800">
-            View Catalog
-          </a>
-        </div>
-      </section>
-
-      {/* PARTS */}
-      <section id="parts" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-black mb-10 font-display">Available Parts</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {parts.map(part => (
-              <PartCard key={part.id} part={part} />
-            ))}
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+      <div className="bg-white p-6 rounded-lg shadow mb-6">
+        <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+        {items.map(item => (
+          <div key={item.id} className="flex items-center justify-between py-3 border-b">
+            <div className="flex-1">
+              <p className="font-medium">{item.name}</p>
+              <p className="text-sm text-gray-600">${item.price.toFixed(2)} each</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => addToCart(item)}
+                className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-sm font-bold"
+              >
+                +
+              </button>
+              <span className="w-8 text-center">{item.quantity}</span>
+              <button
+                onClick={() => {
+                  if (item.quantity > 1) {
+                    // Reduce by 1
+                    for (let i = 0; i < item.quantity - 1; i++) {
+                      removeFromCart(item.id);
+                      addToCart(item);
+                    }
+                  } else {
+                    removeFromCart(item.id);
+                  }
+                }}
+                className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-sm font-bold"
+              >
+                −
+              </button>
+              <button
+                onClick={() => removeFromCart(item.id)}
+                className="text-red-600 text-sm ml-4 hover:underline"
+              >
+                Remove
+              </button>
+            </div>
+            <span className="font-bold w-20 text-right">
+              ${(item.price * item.quantity).toFixed(2)}
+            </span>
           </div>
+        ))}
+        <div className="border-t pt-4 font-bold text-lg flex justify-between">
+          <span>Total:</span>
+          <span>${total}</span>
         </div>
-      </section>
+      </div>
+      <PayPalButtons createOrder={createOrder} onApprove={onApprove} />
     </div>
   );
 }
