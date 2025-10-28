@@ -7,7 +7,7 @@
     "stock": 5,
     "brand": "Bosch",
     "oem": "03L130277A",
-    "image": "/images/fuel-injector.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Fuel+Injector+Set",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
   },
   {
@@ -18,7 +18,7 @@
     "stock": 8,
     "brand": "Sachs",
     "oem": "5Q0513049BFKT",
-    "image": "/images/shock-kit.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Shock+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
   },
   {
@@ -29,7 +29,7 @@
     "stock": 12,
     "brand": "Bosch",
     "oem": "06L906036JKT",
-    "image": "/images/fuel-injector-kit.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Fuel+Injector+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011"]
   },
   {
@@ -40,7 +40,7 @@
     "stock": 10,
     "brand": "Continental",
     "oem": "536181",
-    "image": "/images/timing-belt.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Timing+Belt+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
   },
   {
@@ -51,7 +51,7 @@
     "stock": 7,
     "brand": "Lemforder",
     "oem": "KIT-00984",
-    "image": "/images/trailing-arm.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Trailing+Arm+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A5 2007-2010"]
   },
   {
@@ -62,7 +62,7 @@
     "stock": 15,
     "brand": "ATE",
     "oem": "1K0611701KKT",
-    "image": "/images/brake-hose.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Brake+Hose+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
   },
   {
@@ -73,7 +73,7 @@
     "stock": 20,
     "brand": "Continental",
     "oem": "06J260849DKT3",
-    "image": "/images/drive-belt.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Drive+Belt+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011"]
   },
   {
@@ -84,7 +84,7 @@
     "stock": 18,
     "brand": "Continental",
     "oem": "KIT-06F260849LKT",
-    "image": "/images/drive-belt-kit.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Drive+Belt+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A5 2007-2010"]
   },
   {
@@ -95,7 +95,7 @@
     "stock": 25,
     "brand": "Genuine Audi",
     "oem": "06D998907KT2",
-    "image": "/images/reseal-kit.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Reseal+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
   },
   {
@@ -106,7 +106,7 @@
     "stock": 30,
     "brand": "Bosch",
     "oem": "06H905601AKT4",
-    "image": "/images/spark-plug.jpg",
+    "image": "https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Spark+Plug+Kit",
     "compatibleModels": ["Audi A3 2007-2011", "Audi A4 2007-2011", "Audi A5 2007-2010"]
   }
 ]

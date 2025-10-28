@@ -8,7 +8,7 @@ export default function PartCard({ part }: { part: Parts }) {
   const stockText = part.stock <= 2 ? 'Low Stock!' : `${part.stock} left`;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden card-hover border border-gray-200">
+    <div className="bg-white rounded-lg overflow-hidden card-shade border border-gray-200">
       <img
         src={part.image}
         alt={part.name}
