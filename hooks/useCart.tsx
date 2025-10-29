@@ -1,3 +1,4 @@
+// hooks/useCart.tsx
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -35,37 +36,4 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items]);
 
   const addToCart = (part: Parts) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.id === part.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === part.id ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      }
-      return [...prev, { ...part, quantity: 1 }];
-    });
-  };
-
-  const removeFromCart = (id: number) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
-  };
-
-  const clearCart = () => {
-    setItems([]);
-    localStorage.removeItem('cart');
-  };
-
-  return (
-    <CartContext.Provider value={{ items, addToCart, removeFromCart, clearCart }}>
-      {children}
-    </CartContext.Provider>
-  );
-}
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within CartProvider');
-  }
-  return context;
-};
+    setItems((

@@ -1,3 +1,4 @@
+// app/layout.tsx
 'use client';
 
 import './globals.css';
@@ -13,19 +14,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test' }}>
+      <body className="min-h-screen flex flex-col">
+        <PayPalScriptProvider
+          options={{
+            'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'sb',
+            currency: 'USD',
+          }}
+        >
           <CartProvider>
             <Header />
-            <main>{children}</main>
+            <main className="flex-grow">{children}</main>
             <Footer />
           </CartProvider>
         </PayPalScriptProvider>
-        <body className="min-h-screen flex flex-col">
-  <Header />
-  <main className="flex-grow">{children}</main>
-  <Footer />  {/* ADD THIS */}
-</body>
       </body>
     </html>
   );
