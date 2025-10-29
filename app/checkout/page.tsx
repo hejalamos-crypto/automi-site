@@ -1,121 +1,98 @@
-// app/checkout/page.tsx
+// app/page.tsx
 'use client';
 
-import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { useCart } from '@/hooks/useCart';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import PartCard from '@/components/PartCard';
+import partsData from '@/data/parts.json';
+import { Search, Filter } from 'lucide-react';
 
-export default function Checkout() {
-  const { items, clearCart, removeFromCart, addToCart } = useCart();
-  const router = useRouter();
-  
-  // FIXED: Keep number for PayPal, format for display
-  const totalAmount = items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
-  const total = totalAmount.toFixed(2);
+const cars = [
+  { id: 'a3', name: 'Audi A3', years: '2007-2011', img: '/images/audi-a3.jpg' },
+  { id: 'a4', name: 'Audi A4', years: '2007-2011', img: '/images/audi-a4.jpg' },
+  { id: 'a5', name: 'Audi A5', years: '2007-2010', img: '/images/audi-a5.jpg' },
+  { id: 'a6', name: 'Audi A6', years: '2008-2011', img: '/images/audi-a6.jpg' },
+];
 
-  const updateQuantity = (item: any, delta: number) => {
-    if (delta < 0 && item.quantity === 1) {
-      removeFromCart(item.id);
-    } else {
-      for (let i = 0; i < Math.abs(delta); i++) {
-        delta > 0 ? addToCart(item) : removeFromCart(item.id);
-      }
-    }
-  };
-
-  if (items.length === 0) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-bold mb-4">Your basket is empty</h1>
-        <Link href="/" className="inline-block px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800">
-          Continue Shopping
-        </Link>
-      </div>
-    );
-  }
-
+export default function Home() {
   return (
-    <PayPalScriptProvider
-      options={{
-        'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'sb',
-        currency: 'USD',
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4 py-20">
-        <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+    <>
+      {/* HERO */}
+      <section className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight">
+            Precision Parts<br />for Your Audi
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
+            Premium aftermarket components for A3 • A4 • A5 • A6 (2007-2011)
+          </p>
+          <Link
+            href="#parts"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition transform hover:scale-105"
+          >
+            Shop Now
+          </Link>
+        </div>
+      </section>
 
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          {items.map(item => (
-            <div key={item.id} className="flex items-center justify-between py-4 border-b last:border-b-0">
-              <div className="flex-1">
-                <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-gray-600">${item.price.toFixed(2)} each</p>
+      {/* CAR CARDS */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12">Choose Your Model</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {cars.map((car, i) => (
+              <div
+                key={car.id}
+                className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="aspect-w-16 aspect-h-9">
+                  <img
+                    src={car.img}
+                    alt={car.name}
+                    className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h3 className="text-2xl font-bold">{car.name}</h3>
+                  <p className="text-sm opacity-90">{car.years}</p>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => updateQuantity(item, -1)}
-                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
-                >−</button>
-                <span className="w-8 text-center font-medium">{item.quantity}</span>
-                <button
-                  onClick={() => updateQuantity(item, 1)}
-                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
-                >+</button>
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="text-red-600 text-sm ml-4 hover:underline"
-                >Remove</button>
-              </div>
-              <span className="font-bold w-20 text-right">
-                ${(item.price * item.quantity).toFixed(2)}
-              </span>
-            </div>
-          ))}
-          <div className="border-t pt-4 font-bold text-lg flex justify-between">
-            <span>Total:</span>
-            <span>${total}</span>
+            ))}
           </div>
         </div>
+      </section>
 
-        <div className="bg-gray-50 p-6 rounded-lg">
-<PayPalButtons
-  style={{ layout: 'vertical' }}
-  createOrder={(_data, actions) => {
-    if (!actions?.order) {
-      throw new Error('PayPal order not available');
-    }
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: totalAmount.toString(),
-            currency_code: 'USD',
-          },
-        },
-      ],
-    });
-  }}
-  onApprove={async (data, actions) => {
-    if (!actions?.order) return;
-    try {
-      const capture = await actions.order.capture();
-      console.log('Payment captured:', capture);
-      clearCart();
-      router.push('/success');
-    } catch (err) {
-      console.error('Capture failed:', err);
-      alert('Payment failed. Please try again.');
-    }
-  }}
-  onError={(err) => {
-    console.error('PayPal error:', err);
-    alert('Something went wrong with PayPal. Please try again.');
-  }}
-/>
-          />
+      {/* PARTS SECTION */}
+      <section id="parts" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12">All Available Parts</h2>
+
+          {/* SEARCH + FILTER */}
+          <div className="flex flex-col md:flex-row gap-4 mb-12 max-w-2xl mx-auto">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search parts..."
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              />
+            </div>
+            <button className="flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+              <Filter className="w-5 h-5" />
+              Filter
+            </button>
+          </div>
+
+          {/* PARTS GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {partsData.map((part) => (
+              <PartCard key={part.id} part={part} />
+            ))}
+          </div>
         </div>
-      </div>
-    </PayPalScriptProvider>
+      </section>
+    </>
   );
 }
