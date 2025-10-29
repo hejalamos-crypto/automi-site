@@ -1,4 +1,3 @@
-// components/Header.tsx
 'use client';
 
 import Link from 'next/link';
@@ -11,13 +10,9 @@ export default function Header() {
   return (
     <header className="bg-black text-white sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="font-medium hover:text-gray-300">
-          Home
-        </Link>
+        <Link href="/" className="font-medium hover:text-gray-300">Home</Link>
         <div className="flex items-center gap-8">
-          <Link href="/contact" className="font-medium hover:text-gray-300">
-            Contact
-          </Link>
+          <Link href="/contact" className="font-medium hover:text-gray-300">Contact</Link>
           <Link href="/checkout" className="relative font-medium hover:text-gray-300">
             Basket
             {itemCount > 0 && (
