@@ -37,13 +37,25 @@ export default function Checkout() {
       </div>
 
       <PayPalButtons
-        createOrder={(_, actions) => actions.order!.create({
-          purchase_units: [{ amount: { value: totalAmount.toString(), currency_code: 'USD' } }]
-        })}
+        createOrder={(_, actions) => {
+          return actions.order.create({
+            intent: 'CAPTURE',  // ← REQUIRED
+            purchase_units: [{
+              amount: {
+                value: totalAmount.toString(),
+                currency_code: 'USD'
+              }
+            }]
+          });
+        }}
         onApprove={async (_, actions) => {
-          await actions.order!.capture();
+          await actions.order?.capture();
           clearCart();
           router.push('/success');
+        }}
+        onError={(err) => {
+          console.error('PayPal error:', err);
+          alert('Payment failed. Please try again.');
         }}
       />
     </div>
