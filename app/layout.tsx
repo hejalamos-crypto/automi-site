@@ -14,13 +14,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">
-        <PayPalScriptProvider
-          options={{
-            'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'sb',
-            currency: 'USD',
-          }}
-        >
+      <body className="min-h-screen flex flex-col bg-gray-50">
+<PayPalScriptProvider
+  options={{
+    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'sb',
+    currency: 'USD',
+  }}
+>
           <CartProvider>
             <Header />
             <main className="flex-grow">{children}</main>
