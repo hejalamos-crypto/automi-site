@@ -12,14 +12,14 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* LOGO */}
-        <Link href="/" className="flex items-center space-x-2">
+      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+        {/* BIGGER LOGO */}
+        <Link href="/" className="flex items-center">
           <Image
             src="/images/logo.png"
             alt="Automi logo"
-            width={140}
-            height={40}
+            width={200}   // ← BIGGER
+            height={60}   // ← BIGGER
             className="object-contain"
             priority
           />
@@ -40,29 +40,20 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden p-2"
-          aria-label="Menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d={mobileOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
           </svg>
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden border-t bg-white">
-          <Link href="/" className="block px-4 py-3 text-black border-b">
-            Home
-          </Link>
+          <Link href="/" className="block px-4 py-3 text-black border-b">Home</Link>
           <Link href="/checkout" className="block px-4 py-3 text-black relative">
             Basket
             {itemCount > 0 && (

@@ -21,6 +21,11 @@ export default function RootLayout({
             <Footer />
           </CartProvider>
         </PayPalScriptProvider>
+        <body className="min-h-screen flex flex-col">
+  <Header />
+  <main className="flex-grow">{children}</main>
+  <Footer />  {/* ADD THIS */}
+</body>
       </body>
     </html>
   );

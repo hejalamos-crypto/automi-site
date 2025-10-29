@@ -53,19 +53,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ALL PARTS */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-black mb-10 font-display">
-            All Available Parts
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {partsData.map((part) => (
-              <PartCard key={part.id} part={part} />
-            ))}
-          </div>
-        </div>
-      </section>
+{/* SEARCH + FILTERS */}
+<section className="py-20 bg-gray-50">
+  <div className="max-w-7xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-black mb-6 font-display">All Available Parts</h2>
+
+    {/* SEARCH & FILTER BAR */}
+    <div className="flex flex-col sm:flex-row gap-4 mb-10">
+      <input
+        type="text"
+        placeholder="Search by name or OEM..."
+        className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+      />
+      <select className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none">
+        <option>All Categories</option>
+        <option>Engine</option>
+        <option>Suspension</option>
+        <option>Brakes</option>
+        <option>Electrical</option>
+      </select>
+    </div>
+
+    {/* PARTS GRID */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      {partsData.map((part) => (
+        <PartCard key={part.id} part={part} />
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CONTACT */}
       <section className="py-20 bg-black text-white">
