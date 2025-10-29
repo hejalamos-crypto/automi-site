@@ -31,8 +31,8 @@ export default function Header() {
           <span className="text-xl font-bold">Choose Your Parts</span>
         </Link>
 
-        {/* RIGHT: CONTACT + BASKET */}
-        <div className="flex items-center gap-6">
+        {/* RIGHT: CONTACT + BASKET — SEPARATE */}
+        <div className="flex items-center gap-8">
           <Link href="/contact" className="font-medium hover:text-gray-300">
             Contact
           </Link>
