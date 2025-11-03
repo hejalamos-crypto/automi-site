@@ -1,27 +1,13 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        display: ['"Playfair Display"', 'serif'],
-      },
-      colors: {
-        primary: '#000000',
-        gray: {
-          100: '#F7F7F7',
-          200: '#E5E5E5',
-          300: '#D1D1D1',
-          500: '#737373',
-          700: '#404040',
-          900: '#171717',
-        },
-      },
-    },
+    extend: {},
   },
   plugins: [],
-};
+}

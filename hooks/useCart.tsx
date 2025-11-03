@@ -1,72 +1,54 @@
-// hooks/useCart.tsx
-'use client';
+// hooks/useCart.ts — REPLACE ENTIRE FILE
+import { create } from 'zustand';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Parts } from '@/types';
+interface Part {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  photo: string;
+}
 
-interface CartItem extends Parts {
+interface CartItem extends Part {
   quantity: number;
 }
 
-interface CartContextType {
+interface CartStore {
   items: CartItem[];
-  addToCart: (part: Parts) => void;
-  removeFromCart: (id: number) => void;
-  clearCart: () => void;
+  addToCart: (part: Part) => void;
+  removeItem: (id: string) => void;
+  clear: () => void;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+export const useCart = create<CartStore>((set, get) => ({
+  items: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('cart') || '[]') : [],
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  addToCart: (part) => {
+    const state = get();
+    const existing = state.items.find(i => i.id === part.id);
+    let newItems;
 
-  useEffect(() => {
-    const saved = localStorage.getItem('cart');
-    if (saved) {
-      try {
-        setItems(JSON.parse(saved));
-      } catch {
-        setItems([]);
-      }
+    if (existing) {
+      newItems = state.items.map(i =>
+        i.id === part.id ? { ...i, quantity: i.quantity + 1 } : i
+      );
+    } else {
+      newItems = [...state.items, { ...part, quantity: 1 }];
     }
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(items));
-  }, [items]);  // ← FIXED: proper closing
+    localStorage.setItem('cart', JSON.stringify(newItems));
+    set({ items: newItems });
+  },
 
-  const addToCart = (part: Parts) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.id === part.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === part.id ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      }
-      return [...prev, { ...part, quantity: 1 }];
-    });
-  };
+  removeItem: (id) => {
+    const state = get();
+    const newItems = state.items.filter(i => i.id !== id);
+    localStorage.setItem('cart', JSON.stringify(newItems));
+    set({ items: newItems });
+  },
 
-  const removeFromCart = (id: number) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
-  };
-
-  const clearCart = () => {
-    setItems([]);
+  clear: () => {
     localStorage.removeItem('cart');
-  };
-
-  return (
-    <CartContext.Provider value={{ items, addToCart, removeFromCart, clearCart }}>
-      {children}
-    </CartContext.Provider>
-  );
-}
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within CartProvider');
-  }
-  return context;
-};
+    set({ items: [] });
+  },
+}));

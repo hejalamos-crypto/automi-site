@@ -1,27 +1,24 @@
-'use client';
-
+// app/layout.tsx
 import './globals.css';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { CartProvider } from '@/hooks/useCart';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata = {
+  title: 'Automi',
+  description: 'Your car parts shop',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col bg-gradient-to-b from-gray-100 to-gray-300">
-        <PayPalScriptProvider
-          options={{
-            clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'sb',
-            currency: 'USD',
-          }}
-        >
-          <CartProvider>
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </CartProvider>
-        </PayPalScriptProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
+        <Header />
+        <main className="min-h-screen">
+          {children}
+        </main>
       </body>
     </html>
   );

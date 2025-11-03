@@ -1,76 +1,108 @@
+// app/page.tsx — FULL CLEAN VERSION
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import PartCard from '@/components/PartCard';
-import partsData from '@/data/parts.json';
 import { Search } from 'lucide-react';
 
-const cars = [
-  { id: 'a3', name: 'Audi A3', years: '2007-2011', img: '/images/audi-a3.jpg' },
-  { id: 'a4', name: 'Audi A4', years: '2007-2011', img: '/images/audi-a4.jpg' },
-  { id: 'a5', name: 'Audi A5', years: '2007-2010', img: '/images/audi-a5.jpg' },
-  { id: 'a6', name: 'Audi A6', years: '2008-2011', img: '/images/audi-a6.jpg' },
-];
+interface Car {
+  id: string;
+  name: string;
+  years: string;
+  img: string;
+}
 
 export default function Home() {
-  const [selectedCar, setSelectedCar] = useState('a3');
+  const [cars, setCars] = useState<Car[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredParts = partsData
-    .filter(part => part.compatibleModels.some(m => m.includes(selectedCar.toUpperCase())))
-    .filter(part => part.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  useEffect(() => {
+    const saved = localStorage.getItem('cars');
+    if (saved && saved !== '[]') {
+      try {
+        const parsed = JSON.parse(saved);
+        setCars(parsed);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
+  const filteredCars = cars.filter(car =>
+    car.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (cars.length === 0) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center text-black dark:text-white p-6">
+        <Image src="/images/logo.png" alt="Automi" width={620} height={420} className="rounded-3xl shadow-2xl mb-8" priority />
+        <p className="text-xl mb-6">No cars available.</p>
+        <Link href="/admin" className="bg-black dark:bg-white text-white dark:text-black px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition">
+          Go to Admin
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <section className="bg-gradient-to-br from-gray-900 to-black text-white py-32 text-center">
-        <Link href="/" className="inline-flex flex-col items-center gap-6">
-          <Image src="/images/logo.png" alt="Automi" width={240} height={240} className="object-contain" priority />
-          <h1 className="text-5xl font-black">Choose Your Parts</h1>
-        </Link>
-      </section>
-
-      <section className="bg-gray-100 py-8 border-b">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-6 overflow-x-auto pb-4">
-            {cars.map(car => (
-              <button
-                key={car.id}
-                onClick={() => setSelectedCar(car.id)}
-                className={`flex flex-col items-center p-6 rounded-xl min-w-[180px] transition-all ${
-                  selectedCar === car.id ? 'bg-black text-white shadow-2xl scale-105' : 'bg-white text-black hover:shadow-xl'
-                }`}
-              >
-                <img src={car.img} alt={car.name} className="w-32 h-32 object-cover rounded-lg mb-3" />
-                <span className="font-bold text-lg">{car.name}</span>
-                <span className="text-sm opacity-80">{car.years}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="max-w-xl mx-auto mb-12">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search parts..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
+      {/* LOGO */}
+      <header className="py-20">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <Link href="/">
+            <div className="inline-block group cursor-pointer relative">
+              <div className="absolute inset-0 bg-black/40 blur-3xl scale-90 opacity-70 group-hover:opacity-100 transition-opacity -z-10"></div>
+              <Image 
+                src="/images/logo.png" 
+                alt="Automi" 
+                width={620} 
+                height={420} 
+                className="rounded-3xl shadow-2xl group-hover:shadow-3xl group-hover:scale-105 transition-all duration-300"
+                priority 
               />
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredParts.map(part => <PartCard key={part.id} part={part} />)}
-          </div>
+          </Link>
         </div>
-      </section>
-    </>
+      </header>
+
+      {/* SEARCH */}
+      <div className="max-w-7xl mx-auto px-4 pb-10">
+        <div className="relative max-w-5xl mx-auto">
+          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search cars..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-16 pr-6 py-5 bg-gray-100 dark:bg-gray-900 text-black dark:text-white rounded-full text-lg focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 shadow-2xl"
+          />
+        </div>
+      </div>
+
+      {/* CAR TABS — CLICK TO GO TO /car/[id] */}
+      <div className="mt-20 mb-20 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-8 pb-12 min-w-max px-6">
+          {filteredCars.map(car => (
+            <Link
+              key={car.id}
+              href={`/car/${car.id}`}
+              className="group flex-shrink-0 w-64 h-64 relative"
+            >
+              <div className="absolute inset-0 -bottom-4 rounded-3xl bg-black/30 dark:bg-white/20 blur-3xl scale-90 opacity-70 group-hover:opacity-100 group-hover:scale-95 transition-all duration-300 -z-10"></div>
+              <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-shadow duration-300">
+                <Image 
+                  src={car.img} 
+                  alt={car.name} 
+                  fill
+                  className="object-cover rounded-3xl transition-transform duration-300 group-hover:scale-115"
+                  priority
+                />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
