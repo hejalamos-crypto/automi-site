@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
+import { translations, getLang } from '@/lib/i18n';
 
 interface Car {
   id: string;
@@ -12,6 +13,9 @@ interface Car {
   years: string;
   img: string;
 }
+
+const lang = getLang();
+const t = translations[lang];
 
 export default function Home() {
   const [cars, setCars] = useState<Car[]>([]);
@@ -33,17 +37,20 @@ export default function Home() {
     car.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (cars.length === 0) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center text-black dark:text-white p-6">
-        <Image src="/images/logo.png" alt="Automi" width={620} height={420} className="rounded-3xl shadow-2xl mb-8" priority />
-        <p className="text-xl mb-6">No cars available.</p>
-        <Link href="/admin" className="bg-black dark:bg-white text-white dark:text-black px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition">
-          Go to Admin
-        </Link>
-      </div>
-    );
-  }
+if (cars.length === 0) {
+  return (
+    <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center text-black dark:text-white p-6">
+      <Image src="/images/logo.png" alt="Automi" width={620} height={420} className="rounded-3xl shadow-2xl mb-8" priority />
+      <p className="text-xl mb-6">{t.noCars}</p>
+      <Link 
+        href="/admin" 
+        className="bg-black dark:bg-white text-white dark:text-black px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition"
+      >
+        {t.goToAdmin}
+      </Link>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
@@ -72,7 +79,7 @@ export default function Home() {
           <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" />
           <input
             type="text"
-            placeholder="Search cars..."
+            placeholder={t.search}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-16 pr-6 py-5 bg-gray-100 dark:bg-gray-900 text-black dark:text-white rounded-full text-lg focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 shadow-2xl"
